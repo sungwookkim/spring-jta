@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    jta:
+      singleA:
+        driver-class-name: org.postgresql.xa.PGXADataSource
+        jdbc-url: jdbc:postgresql://localhost:5445/postgres?stringtype=unspecified
+        username: postgres
+        password: password
+      singleB:
+        driver-class-name: org.postgresql.xa.PGXADataSource
+        jdbc-url: jdbc:postgresql://localhost:5446/postgres?stringtype=unspecified
+        username: postgres
+        password: password
+    postgres:
+      singleA:
+        driver-class-name: org.postgresql.Driver
+        jdbc-url: jdbc:postgresql://localhost:5445/postgres?stringtype=unspecified
+        username: postgres
+        password: password
+      singleB:
+        driver-class-name: org.postgresql.Driver
+        jdbc-url: jdbc:postgresql://localhost:5446/postgres?stringtype=unspecified
+        username: postgres
+        password: password
+  jta:
+    atomikos:
+      datasource:
+        max-pool-size: 10
+        min-pool-size: 5
