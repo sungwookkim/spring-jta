@@ -1,6 +1,6 @@
 package com.datasource.domain.singleB;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "single_b_jpa")

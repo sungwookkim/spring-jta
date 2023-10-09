@@ -3,15 +3,13 @@ package com.datasource.spring.config.db.jta;
 import com.atomikos.icatch.jta.UserTransactionImp;
 import com.atomikos.icatch.jta.UserTransactionManager;
 import com.datasource.spring.config.db.postgresql.jpa.AtomikosJtaPlatform;
+import jakarta.transaction.TransactionManager;
+import jakarta.transaction.UserTransaction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
-
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
 
 @Configuration
 @EnableTransactionManagement

@@ -34,7 +34,7 @@ public class JtaJpaSingleBConfig {
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		properties.setProperty("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
 		properties.setProperty("javax.persistence.transactionType", "JTA");
 

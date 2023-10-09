@@ -1,11 +1,8 @@
 package com.datasource.spring.config.db.postgresql.jpa;
 
-import com.datasource.spring.config.db.jta.JtaSingleConfig;
+import jakarta.transaction.TransactionManager;
+import jakarta.transaction.UserTransaction;
 import org.hibernate.engine.transaction.jta.platform.internal.AbstractJtaPlatform;
-import org.springframework.stereotype.Component;
-
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
 
 public class AtomikosJtaPlatform extends AbstractJtaPlatform {
     private static final long serialVersionUID = 1L;
