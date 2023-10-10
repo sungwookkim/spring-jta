@@ -30,7 +30,12 @@ class JtaJpaApplicationTests {
 		this.singleJpaServiceImpl.singleASaveTest(singleAJpa);
 		this.singleJpaServiceImpl.singleBSaveTest(singleBJpa);
 
-		Assertions.assertTrue(0 < singleAJpa.getSeq() && 0 < singleBJpa.getSeq());
+		long singleASeq = singleAJpa.getSeq();
+		long singleBSeq = singleBJpa.getSeq();
+
+		logger.info("singleASeq : {}, singleBSeq : {}", singleASeq, singleBSeq);
+
+		Assertions.assertTrue(singleASeq > 0 && singleBSeq > 0);
 	}
 
 	@Test
@@ -41,17 +46,21 @@ class JtaJpaApplicationTests {
 
 		this.jpaJtaServiceImpl.saveTest(singleAJpa, singleBJpa);
 
-		Assertions.assertEquals(saveAndFindValue
-				, this.singleJpaServiceImpl.singleAFindTestText(singleAJpa.getSeq()).get().getTestText());
+		long singleASeq = singleAJpa.getSeq();
+		long singleBSeq = singleBJpa.getSeq();
 
-		Assertions.assertEquals(saveAndFindValue
-				, this.singleJpaServiceImpl.singleBFindTestText(singleBJpa.getSeq()).get().getTestText());
+		logger.info("singleASeq : {}, singleBSeq : {}", singleASeq, singleBSeq);
+
+		// JTA 트랜잭션을 통해 정상적으로 저장되었는지 확인하기 위해 JTA 트랜잭션이 아닌 일반 트랜잭션으로 조회.
+		Assertions.assertTrue(saveAndFindValue.equals(this.singleJpaServiceImpl.singleAFindTestText(singleASeq).get().getTestText())
+				&& saveAndFindValue.equals(this.singleJpaServiceImpl.singleBFindTestText(singleBSeq).get().getTestText()));
 	}
 
 	@Test
 	void jta_jpa_rollback_test() {
+		String saveAndFindValue = "test_jta";
+
 		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
-			String saveAndFindValue = "test_jta";
 			SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
 			SingleBJpa singleBJpa  = new SingleBJpa(saveAndFindValue);
 
