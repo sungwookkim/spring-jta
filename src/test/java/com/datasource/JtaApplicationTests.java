@@ -65,33 +65,36 @@ class JtaApplicationTests {
 
 	@Test
 	void single_datasource_insert_test() {
-		Assertions.assertEquals(1, this.singleServiceImpl.singleASaveTest("test_A"));
-		Assertions.assertEquals(1, this.singleServiceImpl.singleBSaveTest("test_B"));
+		String saveAndFindValue = "single_test_value";
+
+		long singleASeq = this.singleServiceImpl.singleASaveTest(saveAndFindValue);
+		long singleBSeq = this.singleServiceImpl.singleBSaveTest(saveAndFindValue);
+
+		logger.info("singleASeq : {}, singleBSeq : {}", singleASeq, singleBSeq);
+
+		Assertions.assertTrue(singleASeq > 0 && singleBSeq > 0);
 	}
 
 	@Test
 	void jta_datasource_insert_test() {
-		String saveAndFindValue = "test_jta";
+		String saveAndFindValue = "jta_test_value";
 
 		logger.info("jta insert count : {}", this.jtaServiceImpl.saveTest(saveAndFindValue));
 
-		Assertions.assertEquals(saveAndFindValue
-				, this.singleServiceImpl.singleAFindTestText(saveAndFindValue));
-
-		Assertions.assertEquals(saveAndFindValue
-				, this.singleServiceImpl.singleBFindTestText(saveAndFindValue));
+		// JTA 트랜잭션을 통해 정상적으로 저장되었는지 확인하기 위해 JTA 트랜잭션이 아닌 일반 트랜잭션으로 조회.
+		Assertions.assertTrue(saveAndFindValue.equals(this.singleServiceImpl.singleAFindTestText(saveAndFindValue))
+				&& saveAndFindValue.equals(this.singleServiceImpl.singleBFindTestText(saveAndFindValue)));
 	}
 
 	@Test
 	void jta_rollback_test() {
-		String saveAndFindValue = "test_A";
-		try {
+		String saveAndFindValue = "jta_rollback_test_value";
+
+		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
 			this.jtaServiceImpl.saveRollbackTest(saveAndFindValue);
-		} catch (Exception e) {
+		});
 
-		}
-
-		Assertions.assertEquals(null, this.singleServiceImpl.singleAFindTestText(saveAndFindValue));
-		Assertions.assertEquals(null, this.singleServiceImpl.singleBFindTestText(saveAndFindValue));
+		Assertions.assertTrue(null == this.singleServiceImpl.singleAFindTestText(saveAndFindValue)
+				&& null == this.singleServiceImpl.singleBFindTestText(saveAndFindValue));
 	}
 }
