@@ -65,8 +65,10 @@ class JtaApplicationTests {
 
 	@Test
 	void single_datasource_insert_test() {
-		long singleASeq = this.singleServiceImpl.singleASaveTest("test_A");
-		long singleBSeq = this.singleServiceImpl.singleBSaveTest("test_B");
+		String saveAndFindValue = "single_test_value";
+
+		long singleASeq = this.singleServiceImpl.singleASaveTest(saveAndFindValue);
+		long singleBSeq = this.singleServiceImpl.singleBSaveTest(saveAndFindValue);
 
 		logger.info("singleASeq : {}, singleBSeq : {}", singleASeq, singleBSeq);
 
@@ -75,7 +77,7 @@ class JtaApplicationTests {
 
 	@Test
 	void jta_datasource_insert_test() {
-		String saveAndFindValue = "test_jta";
+		String saveAndFindValue = "jta_test_value";
 
 		logger.info("jta insert count : {}", this.jtaServiceImpl.saveTest(saveAndFindValue));
 
@@ -86,7 +88,7 @@ class JtaApplicationTests {
 
 	@Test
 	void jta_rollback_test() {
-		String saveAndFindValue = "test_A";
+		String saveAndFindValue = "jta_rollback_test_value";
 
 		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
 			this.jtaServiceImpl.saveRollbackTest(saveAndFindValue);

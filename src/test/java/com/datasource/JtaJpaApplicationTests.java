@@ -23,7 +23,7 @@ class JtaJpaApplicationTests {
 
 	@Test
 	void single_jpa_datasource_insert_test() {
-		String saveAndFindValue = "test_jta";
+		String saveAndFindValue = "single_test_vale";
 		SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
 		SingleBJpa singleBJpa  = new SingleBJpa(saveAndFindValue);
 
@@ -40,7 +40,7 @@ class JtaJpaApplicationTests {
 
 	@Test
 	void jta_jpa_datasource_insert_test() {
-		String saveAndFindValue = "test_jta";
+		String saveAndFindValue = "jta_test_value";
 		SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
 		SingleBJpa singleBJpa  = new SingleBJpa(saveAndFindValue);
 
@@ -58,7 +58,7 @@ class JtaJpaApplicationTests {
 
 	@Test
 	void jta_jpa_rollback_test() {
-		String saveAndFindValue = "test_jta";
+		String saveAndFindValue = "jta_rollback_test_value";
 
 		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
 			SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
