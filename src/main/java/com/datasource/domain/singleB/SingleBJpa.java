@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "single_b_jpa")
 public class SingleBJpa {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
 
     @Column(name = "test_text")
