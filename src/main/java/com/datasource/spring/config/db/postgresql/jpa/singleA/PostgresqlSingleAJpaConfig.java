@@ -29,6 +29,11 @@ import java.util.Properties;
 		, transactionManagerRef = "singleAJpaTransactionManager")
 public class PostgresqlSingleAJpaConfig {
 
+	/**
+	 * <pre>
+	 *     {@link LocalContainerEntityManagerFactoryBean} 구현체에서 사용되는 datasource는 {@link SingleADatasource#postgresqlSingleADataSource()}를 사용.
+	 * </pre>
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory(DataSource postgresqlSingleADataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
