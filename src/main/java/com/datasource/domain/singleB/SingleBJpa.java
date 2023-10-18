@@ -2,6 +2,12 @@ package com.datasource.domain.singleB;
 
 import jakarta.persistence.*;
 
+/**
+ * <pre>
+ *     JPA용 JTA 테스트를 위한 엔티티
+ *     해당 엔티티는 Singel B(Postgresql) DB에서 사용.
+ * </pre>
+ */
 @Entity
 @Table(name = "single_b_jpa")
 public class SingleBJpa {

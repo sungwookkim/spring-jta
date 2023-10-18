@@ -1,5 +1,6 @@
 package com.datasource.spring.config.db.postgresql.jpa.singleB;
 
+import com.datasource.spring.config.db.postgresql.datasource.JtaSingleBDatasource;
 import org.hibernate.engine.transaction.jta.platform.internal.AtomikosJtaPlatform;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,12 @@ import java.util.Properties;
 
 /**
  * <pre>
- *     postgresql Single-A DB 접속 클래스
- * </pre>
+ *     JTA 활용을 위한 JPA 설정
  *
+ *     주의점
+ *     - {@link EnableJpaRepositories}의 basePackages 속성이 단일트랜잭션을 활용하는 basePackages와 동일하면 안된다.
+ *     - {@link LocalContainerEntityManagerFactoryBean#setPackagesToScan(String...)}의 패키지는 동일해야 한다.
+ * </pre>
  */
 @Configuration
 @EnableTransactionManagement
@@ -26,6 +30,11 @@ import java.util.Properties;
 		, transactionManagerRef = "jtaSingleTransactionManager")
 public class JtaJpaSingleBConfig {
 
+	/**
+	 * <pre>
+	 *     {@link LocalContainerEntityManagerFactoryBean} 구현체에서 사용되는 datasource는 {@link JtaSingleBDatasource#jtaSingleBDataSource()}를 사용.
+	 * </pre>
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean singleBJtaEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -35,6 +44,8 @@ public class JtaJpaSingleBConfig {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+
+		// JPA에서 JTA 활용을 위한 설정.
 		properties.setProperty("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
 		properties.setProperty("javax.persistence.transactionType", "JTA");
 

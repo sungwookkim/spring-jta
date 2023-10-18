@@ -1,9 +1,17 @@
 package com.datasource.repo.mybatis.single.singleB;
 
+import com.datasource.repo.mybatis.jta.singleB.JtaSingleBMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+/**
+ * <pre>
+ *     기존 SingleBMapper
+ *
+ *     해당 인터페이스는 JTA 활용을 위해 {@link JtaSingleBMapper}의 부모인터페이스가 된다.
+ * </pre>
+ */
 @Mapper
 public interface SingleBMapper {
     @Insert("""

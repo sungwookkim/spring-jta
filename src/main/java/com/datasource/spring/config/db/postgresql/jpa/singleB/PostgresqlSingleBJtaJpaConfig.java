@@ -1,5 +1,6 @@
 package com.datasource.spring.config.db.postgresql.jpa.singleB;
 
+import com.datasource.spring.config.db.postgresql.datasource.SingleBDatasource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,11 @@ import java.util.Properties;
 
 /**
  * <pre>
- *     postgresql Single-A DB 접속 클래스
- * </pre>
+ *     JTA가 아닌 단일트랜잭션 활용을 위한 JPA 설정
  *
+ *     주의점
+ *     - {@link EnableJpaRepositories}의 basePackages 속성이 JTA를 활용하는 basePackages와 동일하면 안된다.
+ * </pre>
  */
 @Configuration
 @EnableTransactionManagement
@@ -27,6 +30,11 @@ import java.util.Properties;
 		, transactionManagerRef = "singleBJpaTransactionManager")
 public class PostgresqlSingleBJtaJpaConfig {
 
+	/**
+	 * <pre>
+	 *     {@link LocalContainerEntityManagerFactoryBean} 구현체에서 사용되는 datasource는 {@link SingleBDatasource#postgresqlSingleBDataSource()}를 사용.
+	 * </pre>
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean singleBEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -48,10 +56,8 @@ public class PostgresqlSingleBJtaJpaConfig {
 
 	/**
 	 * <pre>
-	 *     트랜잭션 객체 반환
+	 *     Single-B를 활용한 JPA 단일트랜잭션 반환.
 	 * </pre>
-	 *
-	 * @return PlatformTransactionManager JpaTransactionManager 객체 반환
 	 */
 	@Bean
 	public PlatformTransactionManager singleBJpaTransactionManager(@Qualifier("singleBEntityManagerFactory") LocalContainerEntityManagerFactoryBean singleBEntityManagerFactory) {
