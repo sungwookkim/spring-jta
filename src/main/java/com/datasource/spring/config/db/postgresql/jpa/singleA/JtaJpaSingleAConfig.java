@@ -35,9 +35,9 @@ public class JtaJpaSingleAConfig {
 	 * </pre>
 	 */
 	@Bean
-	public LocalContainerEntityManagerFactoryBean singleAJtaEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
+	public LocalContainerEntityManagerFactoryBean singleAJtaEntityManagerFactory(DataSource jtaSingleADataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(postgresqlSingleBDataSource);
+		em.setDataSource(jtaSingleADataSource);
 		em.setPackagesToScan("com.datasource.domain.singleA");
 
 		Properties properties = new Properties();

@@ -36,9 +36,9 @@ public class PostgresqlSingleAJpaConfig {
 	 * </pre>
 	 */
 	@Bean
-	public LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
+	public LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory(DataSource postgresqlSingleADataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(postgresqlSingleBDataSource);
+		em.setDataSource(postgresqlSingleADataSource);
 		em.setPackagesToScan("com.datasource.domain.singleA");
 
 		Properties properties = new Properties();
