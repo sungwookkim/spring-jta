@@ -10,8 +10,9 @@ import java.lang.annotation.*;
 
 /**
  * <pre>
- *     해당 인터페이스는 Spring의 {@link Transactional}을 이용한 어노테이션임으로 추후에 Spring을 업그레이드할 경우 {@link Transactional}를 비교하여 동일한 속성으로 맞춰줘야한다.
- *     단 {@link Transactional#value()}, {@link Transactional#transactionManager()} 속성은 설정 하지 않는다.
+ *     Single-B의 JPA {@link Transactional}.
+ *
+ *     Spring {@link Transactional}를 활용한 커스텀 어노테이션.
  * </pre>
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

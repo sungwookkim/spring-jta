@@ -7,6 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+/**
+ * <pre>
+ *     Single-B DB 데이터 소스 설정 클래스.
+ * </pre>
+ */
 @Configuration
 public class SingleBDatasource {
     private final String driverClassName;
@@ -26,10 +31,8 @@ public class SingleBDatasource {
 
     /**
      * <pre>
-     * Single-B DB datasource 반환 메서드
+     *     단일트랜잭션 데이터소스는 {@link HikariDataSource} 구현체를 사용.
      * </pre>
-     *
-     * @return Single-B db 접속 datasource 객체
      */
     @Bean
     public DataSource postgresqlSingleBDataSource() {

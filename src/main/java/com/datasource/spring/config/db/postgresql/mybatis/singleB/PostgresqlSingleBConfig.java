@@ -1,11 +1,10 @@
 package com.datasource.spring.config.db.postgresql.mybatis.singleB;
 
-import com.zaxxer.hikari.HikariDataSource;
+import com.datasource.spring.config.db.postgresql.datasource.SingleBDatasource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -16,7 +15,10 @@ import javax.sql.DataSource;
 
 /**
  * <pre>
- *     postgresql Single-B DB 접속 클래스
+ *     JTA가 아닌 단일트랜잭션 활용을 위한 JPA 설정
+ *
+ *     주의점
+ *     - {@link MapperScan}의 basePackages 속성외 패키지 경로를 지정해야 하는 경우 JTA 트랜잭션을 활용하는 basePackages와 동일하면 안된다.
  * </pre>
  */
 @Configuration
@@ -26,11 +28,8 @@ public class PostgresqlSingleBConfig {
 
 	/**
 	 * <pre>
-	 *     db와 mybatis를 연결하기 위한 SqlSessionFactory 객체 생성 메서드
+	 *     {@link SqlSessionFactory} 구현체에서 사용되는 datasource는  {@link SingleBDatasource#postgresqlSingleBDataSource()}를 사용.
 	 * </pre>
-	 *
-	 * @return
-	 * @throws Exception
 	 */
 	@Bean
 	public SqlSessionFactory postgresqlSingleBSessionFactory(DataSource postgresqlSingleBDataSource) throws Exception {
@@ -43,26 +42,17 @@ public class PostgresqlSingleBConfig {
 		return sqlSessionFactoryBean.getObject();
 	}
 
-	/**
-	 * <pre>
-	 * SqlSessionTemplate 객체를 반환하는 메서드
-	 * </pre>
-	 *
-	 * @param postgresqlSingleBSessionFactory
-	 * @return
-	 * @throws Exception
-	 */
 	@Bean
-	public SqlSessionTemplate postgresSingleBSessionTemplate(SqlSessionFactory postgresqlSingleBSessionFactory) throws Exception {
+	public SqlSessionTemplate postgresSingleBSessionTemplate(SqlSessionFactory postgresqlSingleBSessionFactory) {
 		return new SqlSessionTemplate(postgresqlSingleBSessionFactory);
 	}
 
 	/**
 	 * <pre>
-	 *     트랜잭션 객체 반환
-	 * </pre>
+	 *     Single-B를 활용한 Mubatis 단일트랜잭션 반환.
 	 *
-	 * @return DataSourceTransactionManager 객체 반환
+	 *     사용되는 datasource는  {@link SingleBDatasource#postgresqlSingleBDataSource()}를 사용.
+	 * </pre>
 	 */
 	@Bean
 	public PlatformTransactionManager singleBTransactionManager(DataSource postgresqlSingleBDataSource) {

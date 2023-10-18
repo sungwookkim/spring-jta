@@ -16,9 +16,11 @@ import java.util.Properties;
 
 /**
  * <pre>
- *     postgresql Single-A DB 접속 클래스
- * </pre>
+ *     JTA가 아닌 단일트랜잭션 활용을 위한 JPA 설정
  *
+ *     주의점
+ *     - {@link EnableJpaRepositories}의 basePackages 속성이 JTA를 활용하는 basePackages와 동일하면 안된다.
+ * </pre>
  */
 @Configuration
 @EnableTransactionManagement
@@ -28,9 +30,9 @@ import java.util.Properties;
 public class PostgresqlSingleAJpaConfig {
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
+	public LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory(DataSource postgresqlSingleADataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(postgresqlSingleBDataSource);
+		em.setDataSource(postgresqlSingleADataSource);
 		em.setPackagesToScan("com.datasource.domain.singleA");
 
 		Properties properties = new Properties();
@@ -48,10 +50,8 @@ public class PostgresqlSingleAJpaConfig {
 
 	/**
 	 * <pre>
-	 *     트랜잭션 객체 반환
+	 *     Single-A를 활용한 JPA 단일트랜잭션 반환.
 	 * </pre>
-	 *
-	 * @return PlatformTransactionManager JpaTransactionManager 객체 반환
 	 */
 	@Bean
 	public PlatformTransactionManager singleAJpaTransactionManager(@Qualifier("singleAEntityManagerFactory") LocalContainerEntityManagerFactoryBean singleAEntityManagerFactory) {

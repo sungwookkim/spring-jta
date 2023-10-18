@@ -1,40 +1,48 @@
 package com.datasource.spring.config.db.postgresql.jpa.singleB;
 
+import com.datasource.spring.config.db.postgresql.datasource.JtaSingleBDatasource;
 import org.hibernate.engine.transaction.jta.platform.internal.AtomikosJtaPlatform;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
  * <pre>
- *     postgresql Single-A DB 접속 클래스
- * </pre>
+ *     JTA 활용을 위한 JPA 설정
  *
+ *     주의점
+ *     - {@link EnableJpaRepositories}의 basePackages 속성이 단일트랜잭션을 활용하는 basePackages와 동일하면 안된다.
+ *     - {@link LocalContainerEntityManagerFactoryBean#setPackagesToScan(String...)}의 패키지는 동일해야 한다.
+ * </pre>
  */
 @Configuration
-@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.datasource.repo.jpa.jta.singleB"
 		, entityManagerFactoryRef = "singleBJtaEntityManagerFactory"
 		, transactionManagerRef = "jtaSingleTransactionManager")
 public class JtaJpaSingleBConfig {
 
+	/**
+	 * <pre>
+	 *     {@link LocalContainerEntityManagerFactoryBean} 구현체에서 사용되는 datasource는 {@link JtaSingleBDatasource#jtaSingleBDataSource()}를 사용.
+	 * </pre>
+	 */
 	@Bean
-	public LocalContainerEntityManagerFactoryBean singleBJtaEntityManagerFactory(DataSource postgresqlSingleBDataSource) {
+	public LocalContainerEntityManagerFactoryBean singleBJtaEntityManagerFactory(DataSource jtaSingleBDataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(postgresqlSingleBDataSource);
+		em.setDataSource(jtaSingleBDataSource);
 		em.setPackagesToScan("com.datasource.domain.singleB");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+
+		// JPA에서 JTA 활용을 위한 설정.
 		properties.setProperty("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
 		properties.setProperty("javax.persistence.transactionType", "JTA");
 
