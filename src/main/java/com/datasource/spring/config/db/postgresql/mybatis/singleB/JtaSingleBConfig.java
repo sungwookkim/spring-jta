@@ -22,7 +22,6 @@ import java.util.Properties;
  * </pre>
  */
 @Configuration
-@EnableTransactionManagement
 @MapperScan(basePackages = {"com.datasource.repo.mybatis.jta.singleB"}, sqlSessionFactoryRef = "jtaSingleBSqlSessionFactory")
 public class JtaSingleBConfig {
     private final String driverClassName;
