@@ -1,5 +1,6 @@
 package com.datasource.spring.config.db.postgresql.jpa.singleB;
 
+import com.datasource.spring.config.db.postgresql.datasource.SingleBDatasource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

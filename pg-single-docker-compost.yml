@@ -1,0 +1,22 @@
+version: "3"
+services:
+  pg_single_a:
+    image: postgres:15-alpine
+    command: postgres --max_prepared_transactions=10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pg_single_a_data:/var/lib/postgresql/data
+    ports:
+      - "5445:5432"
+  pg_single_b:
+    image: postgres:15-alpine
+    command: postgres --max_prepared_transactions=10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pg_single_b_data:/var/lib/postgresql/data
+    ports:
+      - "5446:5432"

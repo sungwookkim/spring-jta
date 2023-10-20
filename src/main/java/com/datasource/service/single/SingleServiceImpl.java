@@ -36,6 +36,18 @@ public class SingleServiceImpl {
 
     /**
      * <pre>
+     *     SingleA 단일 트랜잭션 롤백을 확인하기 위한 메서드.
+     * </pre>
+     */
+    @SingleATransactional(rollbackFor = {Exception.class})
+    public long singleASaveRollbackTest(String testText) {
+        this.singleAMapper.saveTest(testText);
+
+        throw new RuntimeException("Single A Rollback Test");
+    }
+
+    /**
+     * <pre>
      *     SingleA 단일 트랜잭션 정상 조회를 확인하기 위한 메서드.
      * </pre>
      */
@@ -55,6 +67,18 @@ public class SingleServiceImpl {
     @SingleBTransactional(rollbackFor = {Exception.class})
     public long singleBSaveTest(String testText) {
         return this.singleBMapper.saveTest(testText);
+    }
+
+    /**
+     * <pre>
+     *     SingleB 단일 트랜잭션 롤백을 확인하기 위한 메서드.
+     * </pre>
+     */
+    @SingleBTransactional(rollbackFor = {Exception.class})
+    public long singleBSaveRollbackTest(String testText) {
+        this.singleBMapper.saveTest(testText);
+
+        throw new RuntimeException("Single B Rollback Test");
     }
 
     /**

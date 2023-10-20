@@ -5,6 +5,7 @@ import com.datasource.domain.singleB.SingleBJpa;
 import com.datasource.service.jta.JpaJtaServiceImpl;
 import com.datasource.service.single.SingleJpaServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ class JtaJpaApplicationTests {
 	JpaJtaServiceImpl jpaJtaServiceImpl;
 
 	@Test
+	@DisplayName("단일 트랜잭션 정상 저장 테스트")
 	void single_jpa_datasource_insert_test() {
 		String saveAndFindValue = "single_test_vale";
 		SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
@@ -36,9 +38,28 @@ class JtaJpaApplicationTests {
 		logger.info("singleASeq : {}, singleBSeq : {}", singleASeq, singleBSeq);
 
 		Assertions.assertTrue(singleASeq > 0 && singleBSeq > 0);
+
 	}
 
 	@Test
+	@DisplayName("단일 트랜잭션 정상 롤백 테스트")
+	void single_jpa_datasource_rollback_test() {
+		String saveAndFindValue = "single_test_vale";
+		SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
+		SingleBJpa singleBJpa  = new SingleBJpa(saveAndFindValue);
+
+		Assertions.assertThrowsExactly(RuntimeException.class, () -> this.singleJpaServiceImpl.singleARollbackTest(singleAJpa));
+		Assertions.assertThrowsExactly(RuntimeException.class, () -> this.singleJpaServiceImpl.singleBRollbackTest(singleBJpa));
+
+		long singleASeq = singleAJpa.getSeq();
+		long singleBSeq = singleBJpa.getSeq();
+
+		Assertions.assertTrue(this.singleJpaServiceImpl.singleAFindTestText(singleASeq).isEmpty()
+				&& this.singleJpaServiceImpl.singleBFindTestText(singleBSeq).isEmpty());
+	}
+
+	@Test
+	@DisplayName("JTA 트랜잭션 정상 저장 테스트")
 	void jta_jpa_datasource_insert_test() {
 		String saveAndFindValue = "jta_test_value";
 		SingleAJpa singleAJpa = new SingleAJpa(saveAndFindValue);
@@ -57,6 +78,7 @@ class JtaJpaApplicationTests {
 	}
 
 	@Test
+	@DisplayName("JTA 트랜잭션 정상 롤백 테스트")
 	void jta_jpa_rollback_test() {
 		String saveAndFindValue = "jta_rollback_test_value";
 

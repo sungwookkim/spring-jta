@@ -2,10 +2,7 @@ package com.datasource;
 
 import com.datasource.service.jta.JtaServiceImpl;
 import com.datasource.service.single.SingleServiceImpl;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +61,7 @@ class JtaApplicationTests {
 	}
 
 	@Test
+	@DisplayName("단일 트랜잭션 정상 저장 테스트")
 	void single_datasource_insert_test() {
 		String saveAndFindValue = "single_test_value";
 
@@ -76,6 +74,24 @@ class JtaApplicationTests {
 	}
 
 	@Test
+	@DisplayName("단일 트랜잭션 정상 롤백 테스트")
+	void single_datasource_rollback_test() {
+		String saveAndFindValue = "single_rollback_test_value";
+
+		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
+			this.singleServiceImpl.singleASaveRollbackTest(saveAndFindValue);
+		});
+
+		Assertions.assertThrowsExactly(RuntimeException.class, () -> {
+			this.singleServiceImpl.singleBSaveRollbackTest(saveAndFindValue);
+		});
+
+		Assertions.assertTrue(null == this.singleServiceImpl.singleAFindTestText(saveAndFindValue)
+				&& null == this.singleServiceImpl.singleBFindTestText(saveAndFindValue));
+	}
+
+	@Test
+	@DisplayName("JTA 트랜잭션 정상 저장 테스트")
 	void jta_datasource_insert_test() {
 		String saveAndFindValue = "jta_test_value";
 
@@ -87,6 +103,7 @@ class JtaApplicationTests {
 	}
 
 	@Test
+	@DisplayName("JTA 트랜잭션 정상 롤백 테스트")
 	void jta_rollback_test() {
 		String saveAndFindValue = "jta_rollback_test_value";
 

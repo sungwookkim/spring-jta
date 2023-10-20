@@ -40,6 +40,18 @@ public class SingleJpaServiceImpl {
 
     /**
      * <pre>
+     *     SingleA 단일 트랜잭션 정상 롤백을 확인하기 위한 메서드.
+     * </pre>
+     */
+    @SingleAJpaTransactional(rollbackFor = {Exception.class})
+    public void singleARollbackTest(SingleAJpa singleAJpa) {
+        this.singleARepository.save(singleAJpa);
+
+        throw new RuntimeException("Single B Rollback Test");
+    }
+
+    /**
+     * <pre>
      *     SingleA 단일 트랜잭션 정상 조회를 확인하기 위한 메서드.
      * </pre>
      */
@@ -59,6 +71,18 @@ public class SingleJpaServiceImpl {
     @SingleBJpaTransactional(rollbackFor = {Exception.class})
     public void singleBSaveTest(SingleBJpa singleBJpa) {
         this.singleBRepository.save(singleBJpa);
+    }
+
+    /**
+     * <pre>
+     *     SingleB 단일 트랜잭션 정상 롤백을 확인하기 위한 메서드.
+     * </pre>
+     */
+    @SingleBJpaTransactional(rollbackFor = {Exception.class})
+    public void singleBRollbackTest(SingleBJpa singleBJpa) {
+        this.singleBRepository.save(singleBJpa);
+
+        throw new RuntimeException("Single B Rollback Test");
     }
 
     /**
