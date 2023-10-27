@@ -32,7 +32,7 @@ public class JtaServiceImpl {
 
     /**
      * <pre>
-     *     이기존 간(SingleA, SingleB)의 트랜잭션 롤백을 확인 하기 위한 메서드.
+     *     이기종 간(SingleA, SingleB)의 트랜잭션 롤백을 확인 하기 위한 메서드.
      * </pre>
      */
     @JtaTransactional(rollbackFor = {Exception.class})

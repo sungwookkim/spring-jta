@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 
 /**
  * <pre>
- *     JTA가 아닌 단일트랜잭션 활용을 위한 JPA 설정
+ *     JTA가 아닌 단일트랜잭션 활용을 위한 Mybatis 설정
  *
  *     주의점
  *     - {@link MapperScan}의 basePackages 속성외 패키지 경로를 지정해야 하는 경우 JTA 트랜잭션을 활용하는 basePackages와 동일하면 안된다.
